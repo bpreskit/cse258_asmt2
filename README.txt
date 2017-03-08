@@ -8,3 +8,5 @@ Under code, you should make a symlink called "local_data" that points to a folde
 $ ln -s path/to/local/data local_data
 
 where path/to/local/data is the (preferably absolute) path to wherever you want to store the big data on your local machine.
+
+Also, under "report", there is a folder called "figs" which, surprise surprise, is where I think we ought to keep all the pictures and graphs that we want to put in the report.  Makes the TeXing easier once we get there.
