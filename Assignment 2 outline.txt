@@ -47,6 +47,7 @@ Continuous task - predict flight delays (DEPARTURE_DELAY)
 
 Potentially useful features: month, day, day of week, airline, origin airport, destination airport
 New features: month -> season at departure airport, season at arriving airport
+Taxi time might suggest how busy is the airport, and may result in delays?
 
 Ridge Regression
 
@@ -86,7 +87,10 @@ Literature
 TO DO:
 1) we need to come to an agreement on which features will are allowable - we think we have them decided above, but if not make any notes.
 From there we need to decide on how to handle NaN - we should do this by tonight if possible. 
+Discard those data? We should have enough even without those.
+
 1.1) Exploratory analysis, do some descriptive statistics?
+relation b/t delays and airlines, delays and mon/day/day_of_week, delays and airports, ...
 
 2) Literature search for new features
 
