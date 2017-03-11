@@ -214,7 +214,6 @@ ax.legend();
 pvt_scheduled_airline_date = flights.pivot_table(index="MONTH_desc",columns="AIRLINE_desc",values="SCHEDULED_DEPARTURE",aggfunc=lambda x: x.count())
 pvt_scheduled_airline_date.head()
 
-
 # In[21]:
 
 fig = plt.figure(figsize=(10,10))
