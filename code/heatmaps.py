@@ -21,7 +21,7 @@ with open(raw_fil, 'r') as file:
 with open(shuf_fil, 'w') as file:
     file.write(header)
 os.system('shuf -n {0} {1} >> {2}'.format(num_flights, raw_fil, shuf_fil))
-flights = pd.read_csv(dat_dir + '/shuf_flights.csv', low_memory=False)
+flights = pd.read_csv(shuf_fil, low_memory=False)
 os.remove(dat_dir + 'shuf_flights.csv')
 
 airlines_dict = dict(zip(airlines['IATA_CODE'],airlines['AIRLINE']))
