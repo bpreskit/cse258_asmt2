@@ -77,3 +77,31 @@ h_labels = pd.qcut(delays, 10)
 #         traffic_rates[(date_key, time_key)] = np.median(hour['ARRIVAL_DELAY'])
 # ohare['HOURLY_JAM'] = ohare.apply(lambda x : traffic_rates[(x['DATE'], np.round(x['SCHEDULED_DEPARTURE'], -2))], axis=1)
 
+print('Calculating medians')
+ohare['MEDIAN_LAST_HOUR'] = roll_fun(ohare, np.median, 'DEP_TIME', 'ARRIVAL_DELAY', 60, 0)
+
+print('Calculating lateness classes')
+ohare['LATENESS_CLASS'], lateness_bins = pd.cut(
+    ohare['ARRIVAL_DELAY'],
+    bins=[-np.inf, 5, 60, np.inf],
+    right=True,
+    retbins=True)
+ohare['MEDIAN_LATENESS'] = pd.cut(
+    ohare['MEDIAN_LAST_HOUR'],
+    bins=[-np.inf, 5, 60, np.inf],
+    right=True)
+
+num_correct = []
+num_wrong = []
+lateness = ohare['LATENESS_CLASS']
+med_late = ohare['MEDIAN_LATENESS']
+lateness_bins = set(list(med_late))
+
+for b in lateness_bins:
+    nc = med_late[(med_late == b) &
+                  (lateness == b)].count()
+    nw = lateness[lateness == b].count() - nc
+    num_correct.append(nc)
+    num_wrong.append(nw)
+
+tri_ber = np.mean([(nw / (nc + nw)) for (nc, nw) in zip(num_correct, num_wrong)])
