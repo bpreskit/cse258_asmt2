@@ -5,6 +5,16 @@ import datetime, os
 import seaborn as sns
 import pdb
 
+def window_fun(data, func, wnd_feat, fun_feat, val_lo, val_hi):
+    ser = data[fun_feat][(data[wnd_feat] >= val_lo) &
+                         (data[wnd_feat] <= val_hi)]
+    return func(ser)
+
+def roll_fun(data, func, wnd_feat, fun_feat, del_lo, del_hi):
+    f = lambda x: window_fun(data, func, wnd_feat, fun_feat,
+                             x - del_lo, x - del_hi)
+    return data[wnd_feat].apply(f)
+
 dat_dir = 'local_data/'
 raw_fil = dat_dir + 'flights.csv'
 shuf_fil = dat_dir + 'shuf_flights.csv'
@@ -59,13 +69,11 @@ t_labels = pd.cut(flights['SCHEDULED_DEPARTURE'], t_bins)
 # Delay bins, used to visualize what effect other variables may have
 h_labels = pd.qcut(delays, 10)
 
-traffic_rates = dict()
+# traffic_rates = dict()
 
-for date_key, day in ohare.groupby(ohare['DATE']):
-    for time_key, hour in day.groupby(
-            np.round(day['SCHEDULED_DEPARTURE'], -2)):
-        traffic_rates[(date_key, time_key)] = np.median(hour['ARRIVAL_DELAY'])
+# for date_key, day in ohare.groupby(ohare['DATE']):
+#     for time_key, hour in day.groupby(
+#             np.round(day['SCHEDULED_DEPARTURE'], -2)):
+#         traffic_rates[(date_key, time_key)] = np.median(hour['ARRIVAL_DELAY'])
+# ohare['HOURLY_JAM'] = ohare.apply(lambda x : traffic_rates[(x['DATE'], np.round(x['SCHEDULED_DEPARTURE'], -2))], axis=1)
 
-pdb.set_trace()
-
-ohare['HOURLY_JAM'] = ohare.apply(lambda x : traffic_rates[(x['DATE'], np.round(x['SCHEDULED_DEPARTURE'], -2))], axis=1)
